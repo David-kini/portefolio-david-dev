@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>David Kini - Développeur Web & Maintenance Informatique</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        primaryDark: '#4a49b8',
+                        secondary: '#1f2937',
+                        light: '#f9fafb',
+                        dark: '#181818',
+                    }
+                }
+            }
+        }
+        
+        // Détection du mode sombre
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        .skill-item {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline-item {
+            position: relative;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1px;
+            height: 100%;
+            background-color: #5D5CDE;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -7px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: #5D5CDE;
+        }
+        
+        .project-card {
+            transition: transform 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .dark .skill-item:hover {
+            box-shadow: 0 10px 25px -5px rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Animations de base */
+        .animate-slide-in {
+            animation: slideIn 0.6s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+            animation-play-state: paused;
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease forwards;
+            opacity: 0;
+            animation-play-state: paused;
+        }
+        
+        .animate-slide-left {
+            animation: slideLeft 0.6s ease forwards;
+            opacity: 0;
+            transform: translateX(-50px);
+            animation-play-state: paused;
+        }
+        
+        .animate-slide-right {
+            animation: slideRight 0.6s ease forwards;
+            opacity: 0;
+            transform: translateX(50px);
+            animation-play-state: paused;
+        }
+        
+        .animate-scale {
+            animation: scale 0.5s ease forwards;
+            opacity: 0;
+            transform: scale(0.8);
+            animation-play-state: paused;
+        }
+        
+        .animate-bounce-in {
+            animation: bounceIn 0.8s cubic-bezier(0.215, 0.610, 0.355, 1.000) forwards;
+            opacity: 0;
+            transform: scale(0.3);
+            animation-play-state: paused;
+        }
+        
+        .animate-flip {
+            animation: flip 0.8s ease forwards;
+            backface-visibility: hidden;
+            opacity: 0;
+            transform: perspective(400px) rotateY(90deg);
+            animation-play-state: paused;
+        }
+        
+        /* Animation keyframes */
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes scale {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            20% {
+                transform: scale(1.1);
+            }
+            40% {
+                transform: scale(0.9);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(1.03);
+            }
+            80% {
+                transform: scale(0.97);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes flip {
+            to {
+                opacity: 1;
+                transform: perspective(400px) rotateY(0);
+            }
+        }
+        
+        /* Animations pour groupes d'éléments (staggered effect) */
+        .stagger-group .stagger-item {
+            opacity: 0;
+            animation-fill-mode: forwards;
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800 dark:bg-dark dark:text-gray-200">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-10 bg-white dark:bg-dark shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="font-bold text-xl text-primary">David<span class="text-gray-800 dark:text-white">.Kini</span></div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="hover:text-primary transition">Accueil</a>
+                <a href="#skills" class="hover:text-primary transition">Compétences</a>
+                <a href="#education" class="hover:text-primary transition">Formation</a>
+                <a href="#projects" class="hover:text-primary transition">Projets</a>
+                <a href="#contact" class="hover:text-primary transition">Contact</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <!-- Bouton Mode Sombre/Clair -->
+                <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                    <i class="fas fa-sun text-yellow-500 dark:hidden"></i>
+                    <i class="fas fa-moon text-blue-300 hidden dark:block"></i>
+                </button>
+                <!-- Bouton Menu Mobile -->
+                <button id="mobileMenuBtn" class="md:hidden text-gray-800 dark:text-white">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        <div id="mobileMenu" class="hidden md:hidden">
+            <div class="px-4 py-3 bg-white dark:bg-dark shadow-md flex flex-col space-y-3">
+                <a href="#home" class="hover:text-primary transition">Accueil</a>
+                <a href="#skills" class="hover:text-primary transition">Compétences</a>
+                <a href="#education" class="hover:text-primary transition">Formation</a>
+                <a href="#projects" class="hover:text-primary transition">Projets</a>
+                <a href="#contact" class="hover:text-primary transition">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen pt-20 flex items-center">
+        <div class="container mx-auto px-4 py-16">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 animate-slide-left" style="animation-delay: 0.2s;">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">David <span class="text-primary">Kini</span></h1>
+                    <h2 class="text-2xl md:text-3xl font-medium mb-6">Développeur Web & Maintenance Informatique</h2>
+                    <p class="text-lg mb-8 dark:text-gray-300">Passionné par la technologie et le développement informatique. Expert en résolution de problèmes techniques et création d'applications web innovantes.</p>
+                    <div class="flex space-x-4">
+                        <a href="#contact" class="px-6 py-3 bg-primary hover:bg-primaryDark text-white rounded-lg transition shadow-lg animate-bounce-in" style="animation-delay: 0.8s;">Me contacter</a>
+                        <a href="#projects" class="px-6 py-3 border border-primary text-primary hover:bg-primary hover:text-white rounded-lg transition animate-bounce-in" style="animation-delay: 1s;">Voir mes projets</a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 mt-10 md:mt-0 flex justify-center animate-slide-right" style="animation-delay: 0.4s;">
+                    <!-- Remplacez l'image par votre photo personnelle -->
+                    <div class="relative h-80 w-80 rounded-full overflow-hidden bg-gradient-to-br from-primary to-blue-400 flex items-center justify-center shadow-xl">
+                        <img id="profile-image" src="image/profil.jpeg" alt="David Kini" class="w-full h-full object-cover" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-16 animate-fade-in">Mes Compétences</h2>
+            
+            <div class="mb-16 animate-fade-in" style="animation-delay: 0.2s;">
+                <h3 class="text-2xl font-semibold mb-8 text-center">Développement Web</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 stagger-group">
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.1s;">
+                        <i class="fab fa-html5 text-4xl text-orange-500 mb-4"></i>
+                        <h4 class="font-medium">HTML</h4>
+                    </div>
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.2s;">
+                        <i class="fab fa-css3-alt text-4xl text-blue-500 mb-4"></i>
+                        <h4 class="font-medium">CSS</h4>
+                    </div>
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.3s;">
+                        <i class="fab fa-js text-4xl text-yellow-500 mb-4"></i>
+                        <h4 class="font-medium">JavaScript</h4>
+                    </div>
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.4s;">
+                        <i class="fab fa-php text-4xl text-purple-500 mb-4"></i>
+                        <h4 class="font-medium">PHP</h4>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-16 animate-fade-in" style="animation-delay: 0.3s;">
+                <h3 class="text-2xl font-semibold mb-8 text-center">Bases de Données</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6 stagger-group">
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.1s;">
+                        <i class="fas fa-database text-4xl text-blue-600 mb-4"></i>
+                        <h4 class="font-medium">SQL Server</h4>
+                    </div>
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.2s;">
+                        <i class="fas fa-database text-4xl text-orange-600 mb-4"></i>
+                        <h4 class="font-medium">MySQL</h4>
+                    </div>
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.3s;">
+                        <i class="fas fa-server text-4xl text-gray-600 mb-4"></i>
+                        <h4 class="font-medium">Administration DB</h4>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-16 animate-fade-in" style="animation-delay: 0.4s;">
+                <h3 class="text-2xl font-semibold mb-8 text-center">Langages de Programmation</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6 stagger-group">
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.1s;">
+                        <i class="fas fa-code text-4xl text-blue-700 mb-4"></i>
+                        <h4 class="font-medium">C</h4>
+                    </div>
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.2s;">
+                        <i class="fab fa-python text-4xl text-green-600 mb-4"></i>
+                        <h4 class="font-medium">Python</h4>
+                    </div>
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.3s;">
+                        <i class="fab fa-android text-4xl text-green-500 mb-4"></i>
+                        <h4 class="font-medium">Kotlin</h4>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="animate-fade-in" style="animation-delay: 0.5s;">
+                <h3 class="text-2xl font-semibold mb-8 text-center">Autres Compétences</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 stagger-group">
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.1s;">
+                        <i class="fas fa-network-wired text-4xl text-indigo-600 mb-4"></i>
+                        <h4 class="font-medium">Réseaux</h4>
+                    </div>
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.2s;">
+                        <i class="fas fa-tools text-4xl text-red-500 mb-4"></i>
+                        <h4 class="font-medium">Maintenance</h4>
+                    </div>
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.3s;">
+                        <i class="fas fa-mobile-alt text-4xl text-gray-700 mb-4"></i>
+                        <h4 class="font-medium">Dépannage Mobile</h4>
+                    </div>
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.4s;">
+                        <i class="fas fa-video text-4xl text-purple-600 mb-4"></i>
+                        <h4 class="font-medium">Montage Vidéo</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="py-20">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-16 animate-fade-in">Formation</h2>
+            
+            <div class="max-w-3xl mx-auto">
+                <div class="timeline-item pl-10 pb-10 animate-slide-right" style="animation-delay: 0.2s;">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-2">L2 en Maintenance Informatique</h3>
+                        <p class="text-primary font-medium">ISTA - Actuellement</p>
+                        <p class="mt-3 dark:text-gray-300">Formation approfondie en maintenance des systèmes informatiques, réseaux et dépannage.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item pl-10 pb-10 animate-slide-right" style="animation-delay: 0.4s;">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-2">Diplôme d'État</h3>
+                        <p class="text-primary font-medium">CS Boboto - 2023</p>
+                        <p class="mt-3 dark:text-gray-300">Obtention du diplôme d'État en informatique avec mention.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item pl-10 pb-10 animate-slide-right" style="animation-delay: 0.6s;">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-2">Certificat d'Études Primaires</h3>
+                        <p class="text-primary font-medium">2023</p>
+                        <p class="mt-3 dark:text-gray-300">Obtention du certificat d'études primaires.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item pl-10 animate-slide-right" style="animation-delay: 0.8s;">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-2">École Primaire</h3>
+                        <p class="text-primary font-medium">EP Leka - Terminé en 2010</p>
+                        <p class="mt-3 dark:text-gray-300">Formation primaire complétée avec succès.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-16 animate-fade-in">Mes Projets</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="project-card bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg animate-flip" style="animation-delay: 0.2s;">
+                    <div class="h-48 bg-gradient-to-r from-blue-500 to-primary flex items-center justify-center">
+                        <i class="fas fa-globe text-white text-5xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Site Web E-commerce</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Développement d'une plateforme de vente en ligne avec panier d'achat et système de paiement sécurisé.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">HTML</span>
+                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">CSS</span>
+                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">JavaScript</span>
+                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">PHP</span>
+                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">MySQL</span>
+                        </div>
+                        <a href="#" class="text-primary hover:underline flex items-center gap-2">
+                            <span>Voir le projet</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="project-card bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg animate-flip" style="animation-delay: 0.4s;">
+                    <div class="h-48 bg-gradient-to-r from-green-500 to-blue-500 flex items-center justify-center">
+                        <i class="fas fa-mobile-alt text-white text-5xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Application Mobile</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Application Android de gestion de tâches avec synchronisation cloud et notifications.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">Kotlin</span>
+                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">Firebase</span>
+                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">Material Design</span>
+                        </div>
+                        <a href="#" class="text-primary hover:underline flex items-center gap-2">
+                            <span>Voir le projet</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="project-card bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg animate-flip" style="animation-delay: 0.6s;">
+                    <div class="h-48 bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+                        <i class="fas fa-network-wired text-white text-5xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Système de Gestion de Réseau</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Outil de surveillance et gestion de réseau pour petites entreprises avec tableau de bord analytique.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">Python</span>
+                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">Django</span>
+                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">SQL</span>
+                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">Docker</span>
+                        </div>
+                        <a href="#" class="text-primary hover:underline flex items-center gap-2">
+                            <span>Voir le projet</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-16 animate-fade-in">Me Contacter</h2>
+            
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="animate-slide-left" style="animation-delay: 0.2s;">
+                    <h3 class="text-2xl font-semibold mb-6">Contactez-moi</h3>
+                    <p class="mb-8 dark:text-gray-300">N'hésitez pas à me contacter pour discuter de vos projets ou pour toute question concernant mes services.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 animate-fade-in" style="animation-delay: 0.4s;">
+                            <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Email</p>
+                                <p class="font-medium">david.kini@example.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4 animate-fade-in" style="animation-delay: 0.5s;">
+                            <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Téléphone</p>
+                                <a href="tel:+243XXXXXXXXX" class="font-medium hover:text-primary transition">+243 853 110 527 & +243 858 275 549</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4 animate-fade-in" style="animation-delay: 0.6s;">
+                            <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Localisation</p>
+                                <p class="font-medium">Kinshasa, République Démocratique du Congo</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 flex gap-4 stagger-group">
+                        <a href="https://www.facebook.com/bivins.david" target="_blank" class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center transition stagger-item animate-bounce-in" style="animation-delay: 0.1s;">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://twitter.com/" target="_blank" class="w-10 h-10 bg-blue-400 hover:bg-blue-500 text-white rounded-full flex items-center justify-center transition stagger-item animate-bounce-in" style="animation-delay: 0.2s;">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://www.instagram.com/david.developpeur?igsh=YzljYTk1ODg3Zg==" target="_blank" class="w-10 h-10 bg-pink-600 hover:bg-pink-700 text-white rounded-full flex items-center justify-center transition stagger-item animate-bounce-in" style="animation-delay: 0.3s;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/" target="_blank" class="w-10 h-10 bg-blue-700 hover:bg-blue-800 text-white rounded-full flex items-center justify-center transition stagger-item animate-bounce-in" style="animation-delay: 0.4s;">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://t.me/votreutilisateur" target="_blank" class="w-10 h-10 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center transition stagger-item animate-bounce-in" style="animation-delay: 0.5s;">
+                            <i class="fab fa-telegram-plane"></i>
+                        </a>
+                        <a href="https://wa.me/243910072841" target="_blank" class="w-10 h-10 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center transition stagger-item animate-bounce-in" style="animation-delay: 0.6s;">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="https://youtube.com/@bienvenukini2527?si=VZdTKFqsGm0MzocE" target="_blank" class="w-10 h-10 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center transition stagger-item animate-bounce-in" style="animation-delay: 0.7s;">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="animate-slide-right" style="animation-delay: 0.3s;">
+                    <form action="#" method="post" class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+                        <div class="mb-4">
+                            <label for="name" class="block text-sm font-medium mb-2">Nom</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-base" required>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="email" class="block text-sm font-medium mb-2">Email</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-base" required>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="subject" class="block text-sm font-medium mb-2">Sujet</label>
+                            <input type="text" id="subject" name="subject" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-base" required>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="message" class="block text-sm font-medium mb-2">Message</label>
+                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-base" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full py-3 bg-primary hover:bg-primaryDark text-white rounded-lg transition shadow-lg flex items-center justify-center gap-2 animate-scale" style="animation-delay: 0.7s;">
+                            <span>Envoyer le message</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 bg-gray-900 text-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0 animate-fade-in" style="animation-delay: 0.2s;">
+                    <div class="font-bold text-xl text-primary mb-2">David<span class="text-white">.Kini</span></div>
+                    <p class="text-gray-400">Développeur Web & Maintenance Informatique</p>
+                </div>
+                
+                <div class="mb-6 md:mb-0 animate-fade-in" style="animation-delay: 0.3s;">
+                    <p class="text-center">&copy; 2024 David Kini. Tous droits réservés.</p>
+                </div>
+                
+                <div class="flex gap-4 animate-fade-in" style="animation-delay: 0.4s;">
+                    <a href="https://www.facebook.com/bivins.david" target="_blank" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" target="_blank" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.instagram.com/david.developpeur?igsh=YzljYTk1ODg3Zg==" target="_blank" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/" target="_blank" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://t.me/votreutilisateur" target="_blank" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-telegram-plane"></i>
+                    </a>
+                    <a href="https://wa.me/243910072841" target="_blank" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://youtube.com/@bienvenukini2527?si=VZdTKFqsGm0MzocE" target="_blank" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Fonction pour afficher les éléments au scroll avec une meilleure détection
+        function checkScroll() {
+            const animatedElements = document.querySelectorAll('.animate-slide-in, .animate-fade-in, .animate-slide-left, .animate-slide-right, .animate-scale, .animate-bounce-in, .animate-flip, .stagger-item');
+            
+            animatedElements.forEach(element => {
+                const position = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                // Déclencher l'animation quand l'élément est dans la vue (90% de la hauteur de fenêtre)
+                if (position < windowHeight * 0.9) {
+                    element.style.animationPlayState = 'running';
+                }
+            });
+        }
+
+        // Fonction pour animation des éléments visibles au chargement initial
+        function animateInitialElements() {
+            const elements = document.querySelectorAll('.animate-slide-in, .animate-fade-in, .animate-slide-left, .animate-slide-right, .animate-scale, .animate-bounce-in, .animate-flip, .stagger-item');
+            
+            // Ajouter un délai avant d'animer les éléments visibles au chargement
+            // pour permettre au DOM de se charger complètement
+            setTimeout(() => {
+                elements.forEach(element => {
+                    const position = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (position < windowHeight) {
+                        element.style.animationPlayState = 'running';
+                    }
+                });
+            }, 100);
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Menu mobile
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Fermer le menu mobile lors du clic sur un lien
+            document.querySelectorAll('#mobileMenu a').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+            
+            // Toggle mode sombre/clair
+            const themeToggle = document.getElementById('themeToggle');
+            themeToggle.addEventListener('click', function() {
+                document.documentElement.classList.toggle('dark');
+            });
+            
+            // Animation au défilement
+            window.addEventListener('scroll', checkScroll);
+            
+            // Animation des éléments visibles au chargement
+            animateInitialElements();
+            
+            // Smooth scroll pour les ancres
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 70,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Animation formulaire de contact (simulation d'envoi)
+            const contactForm = document.querySelector('#contact form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
+                    submitBtn.disabled = true;
+                    
+                    setTimeout(() => {
+                        submitBtn.innerHTML = '<i class="fas fa-check"></i> Message envoyé!';
+                        submitBtn.classList.remove('bg-primary');
+                        submitBtn.classList.add('bg-green-600');
+                        
+                        // Réinitialiser le formulaire
+                        this.reset();
+                        
+                        // Revenir à l'état d'origine après un délai
+                        setTimeout(() => {
+                            submitBtn.innerHTML = originalText;
+                            submitBtn.disabled = false;
+                            submitBtn.classList.remove('bg-green-600');
+                            submitBtn.classList.add('bg-primary');
+                        }, 3000);
+                    }, 1500);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
