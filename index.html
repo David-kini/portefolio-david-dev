@@ -210,6 +210,57 @@
             animation-fill-mode: forwards;
             animation-play-state: paused;
         }
+        
+        /* Styles pour modal admin */
+        .admin-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .admin-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 60;
+            display: none;
+        }
+        
+        .admin-panel.active {
+            display: flex;
+        }
+        
+        /* Spin loader */
+        .loader {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #5D5CDE;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="bg-white text-gray-800 dark:bg-dark dark:text-gray-200">
@@ -583,7 +634,7 @@
                     <p class="text-center">&copy; 2024 David Kini. Tous droits réservés.</p>
                 </div>
                 
-                <div class="flex gap-4 animate-fade-in" style="animation-delay: 0.4s;">
+                <div class="flex gap-4 animate-fade-in items-center" style="animation-delay: 0.4s;">
                     <a href="https://www.facebook.com/bivins.david" target="_blank" class="text-gray-400 hover:text-white transition">
                         <i class="fab fa-facebook-f"></i>
                     </a>
@@ -605,43 +656,432 @@
                     <a href="https://youtube.com/@bienvenukini2527?si=VZdTKFqsGm0MzocE" target="_blank" class="text-gray-400 hover:text-white transition">
                         <i class="fab fa-youtube"></i>
                     </a>
+                    <!-- Lien d'administration -->
+                    <button id="admin-link" class="text-gray-600 hover:text-gray-400 ml-4 text-xs transition">
+                        <i class="fas fa-lock"></i>
+                    </button>
                 </div>
             </div>
         </div>
     </footer>
 
-    <script>
-        // Fonction pour afficher les éléments au scroll avec une meilleure détection
-        function checkScroll() {
-            const animatedElements = document.querySelectorAll('.animate-slide-in, .animate-fade-in, .animate-slide-left, .animate-slide-right, .animate-scale, .animate-bounce-in, .animate-flip, .stagger-item');
+    <!-- Modal de Connexion Admin -->
+    <div id="admin-modal" class="admin-modal">
+        <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl max-w-md w-full">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold">Connexion Administration</h3>
+                <button id="close-admin-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="login-error" class="hidden mb-4 p-3 bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 rounded-lg"></div>
+            <form id="admin-login-form">
+                <div class="mb-4">
+                    <label for="admin-username" class="block text-sm font-medium mb-2">Nom d'utilisateur</label>
+                    <input type="text" id="admin-username" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-base" required>
+                </div>
+                <div class="mb-6">
+                    <label for="admin-password" class="block text-sm font-medium mb-2">Mot de passe</label>
+                    <input type="password" id="admin-password" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-base" required>
+                </div>
+                <button type="submit" class="w-full py-3 bg-primary hover:bg-primaryDark text-white rounded-lg transition shadow-lg flex items-center justify-center gap-2">
+                    <span>Se connecter</span>
+                    <i class="fas fa-sign-in-alt"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Panneau d'Administration -->
+    <div id="admin-panel" class="admin-panel">
+        <div class="flex flex-col h-full">
+            <!-- En-tête du panneau admin -->
+            <div class="bg-primary text-white py-4 px-6 flex justify-between items-center shadow-md">
+                <div class="flex items-center">
+                    <i class="fas fa-shield-alt text-xl mr-2"></i>
+                    <h2 class="text-lg font-semibold">Panneau d'Administration</h2>
+                </div>
+                <button id="close-admin-panel" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
             
-            animatedElements.forEach(element => {
-                const position = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                // Déclencher l'animation quand l'élément est dans la vue (90% de la hauteur de fenêtre)
-                if (position < windowHeight * 0.9) {
-                    element.style.animationPlayState = 'running';
+            <!-- Contenu du panneau -->
+            <div class="flex-1 bg-gray-100 dark:bg-gray-900 overflow-y-auto">
+                <div class="container mx-auto p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-semibold text-gray-600 dark:text-gray-300">Visiteurs Totaux</h3>
+                                <div class="bg-blue-100 dark:bg-blue-900 p-2 rounded">
+                                    <i class="fas fa-users text-blue-600 dark:text-blue-300"></i>
+                                </div>
+                            </div>
+                            <p id="total-visitors" class="text-3xl font-bold">--</p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-semibold text-gray-600 dark:text-gray-300">Utilisateurs Actifs</h3>
+                                <div class="bg-green-100 dark:bg-green-900 p-2 rounded">
+                                    <i class="fas fa-user-clock text-green-600 dark:text-green-300"></i>
+                                </div>
+                            </div>
+                            <p id="active-users" class="text-3xl font-bold">--</p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-semibold text-gray-600 dark:text-gray-300">Temps Moyen</h3>
+                                <div class="bg-yellow-100 dark:bg-yellow-900 p-2 rounded">
+                                    <i class="fas fa-clock text-yellow-600 dark:text-yellow-300"></i>
+                                </div>
+                            </div>
+                            <p id="avg-time" class="text-3xl font-bold">--</p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-semibold text-gray-600 dark:text-gray-300">Visites Aujourd'hui</h3>
+                                <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded">
+                                    <i class="fas fa-chart-line text-purple-600 dark:text-purple-300"></i>
+                                </div>
+                            </div>
+                            <p id="today-visits" class="text-3xl font-bold">--</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Liste des visiteurs -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow mb-8">
+                        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                            <h3 class="text-lg font-semibold">Derniers Visiteurs</h3>
+                        </div>
+                        <div class="p-6" id="visitors-loading">
+                            <div class="flex justify-center">
+                                <div class="loader"></div>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700" id="visitors-table" style="display: none;">
+                                <thead class="bg-gray-50 dark:bg-gray-700">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Visiteur ID</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Adresse IP</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Navigateur</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Système</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Date de visite</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Temps passé</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Statut</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="visitors-data" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                    <!-- Les données des visiteurs seront injectées ici -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Graphique des visites -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold mb-4">Statistiques de visites</h3>
+                        <div class="relative">
+                            <canvas id="visits-chart" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Variables globales pour le suivi des visiteurs
+        let visitors = [];
+        let currentVisitorId = null;
+        let visitStartTime = null;
+        let isAdmin = false;
+        let isTracking = false;
+
+        // Identifiants d'administrateur codés en dur (à changer dans un environnement de production)
+        const ADMIN_USERNAME = "admin";
+        const ADMIN_PASSWORD = "admin123";
+
+        // Fonction pour démarrer le suivi des visiteurs
+        function startTracking() {
+            if (isTracking) return;
+            isTracking = true;
+
+            // Générer un ID unique pour le visiteur actuel
+            currentVisitorId = 'visitor_' + Math.random().toString(36).substr(2, 9);
+            visitStartTime = Date.now();
+
+            // Collecter les informations du visiteur
+            const visitorInfo = {
+                id: currentVisitorId,
+                ip: '(IP sera collectée)',  // Simulé - serait extrait côté serveur
+                userAgent: navigator.userAgent,
+                browser: getBrowserInfo(),
+                os: getOSInfo(),
+                visitTime: new Date().toISOString(),
+                timeSpent: 0,
+                status: 'en ligne',
+                pages: [{
+                    url: window.location.pathname,
+                    visitTime: new Date().toISOString(),
+                    timeSpent: 0
+                }]
+            };
+
+            // Simuler la collecte d'IP (dans un environnement réel, cela serait fait côté serveur)
+            simulateIpCollection(visitorInfo);
+
+            // Ajouter aux visiteurs
+            visitors.push(visitorInfo);
+            
+            // Sauvegarder les données (dans un environnement réel avec base de données)
+            saveVisitorData();
+
+            // Mettre à jour le temps passé toutes les secondes
+            setInterval(updateTimeSpent, 1000);
+
+            // Configurer un gestionnaire pour quand l'utilisateur quitte la page
+            window.addEventListener('beforeunload', function() {
+                const visitor = visitors.find(v => v.id === currentVisitorId);
+                if (visitor) {
+                    visitor.status = 'déconnecté';
+                    visitor.timeSpent = Math.floor((Date.now() - visitStartTime) / 1000);
+                    saveVisitorData();
                 }
             });
         }
 
-        // Fonction pour animation des éléments visibles au chargement initial
-        function animateInitialElements() {
-            const elements = document.querySelectorAll('.animate-slide-in, .animate-fade-in, .animate-slide-left, .animate-slide-right, .animate-scale, .animate-bounce-in, .animate-flip, .stagger-item');
+        // Fonction pour simuler la collecte d'adresse IP
+        function simulateIpCollection(visitor) {
+            // Génère une adresse IP aléatoire pour la démonstration
+            const ip1 = Math.floor(Math.random() * 255);
+            const ip2 = Math.floor(Math.random() * 255);
+            const ip3 = Math.floor(Math.random() * 255);
+            const ip4 = Math.floor(Math.random() * 255);
             
-            // Ajouter un délai avant d'animer les éléments visibles au chargement
-            // pour permettre au DOM de se charger complètement
-            setTimeout(() => {
-                elements.forEach(element => {
-                    const position = element.getBoundingClientRect().top;
-                    const windowHeight = window.innerHeight;
-                    
-                    if (position < windowHeight) {
-                        element.style.animationPlayState = 'running';
+            visitor.ip = `${ip1}.${ip2}.${ip3}.${ip4}`;
+        }
+
+        // Fonctions pour obtenir les informations système
+        function getBrowserInfo() {
+            const userAgent = navigator.userAgent;
+            let browserName;
+            
+            if (userAgent.match(/chrome|chromium|crios/i)) {
+                browserName = "Chrome";
+            } else if (userAgent.match(/firefox|fxios/i)) {
+                browserName = "Firefox";
+            } else if (userAgent.match(/safari/i)) {
+                browserName = "Safari";
+            } else if (userAgent.match(/opr\//i)) {
+                browserName = "Opera";
+            } else if (userAgent.match(/edg/i)) {
+                browserName = "Edge";
+            } else {
+                browserName = "Navigateur inconnu";
+            }
+            
+            return browserName;
+        }
+
+        function getOSInfo() {
+            const userAgent = navigator.userAgent;
+            let osName;
+            
+            if (userAgent.match(/windows nt/i)) {
+                osName = "Windows";
+            } else if (userAgent.match(/macintosh|mac os x/i)) {
+                osName = "MacOS";
+            } else if (userAgent.match(/linux/i)) {
+                osName = "Linux";
+            } else if (userAgent.match(/android/i)) {
+                osName = "Android";
+            } else if (userAgent.match(/iphone|ipad|ipod/i)) {
+                osName = "iOS";
+            } else {
+                osName = "OS inconnu";
+            }
+            
+            return osName;
+        }
+
+        // Fonction pour mettre à jour le temps passé
+        function updateTimeSpent() {
+            if (!currentVisitorId) return;
+            
+            const visitor = visitors.find(v => v.id === currentVisitorId);
+            if (visitor) {
+                visitor.timeSpent = Math.floor((Date.now() - visitStartTime) / 1000);
+                saveVisitorData();
+            }
+        }
+
+        // Fonction pour sauvegarder les données des visiteurs (simulé)
+        function saveVisitorData() {
+            // Dans un environnement réel, ces données seraient envoyées à un serveur
+            // Pour cette démo, nous utilisons des variables globales JS
+            
+            // Mettre à jour le tableau de bord administrateur si le panneau est ouvert
+            if (isAdmin && document.getElementById('admin-panel').classList.contains('active')) {
+                updateAdminDashboard();
+            }
+        }
+
+        // Fonction pour formater la durée en format lisible
+        function formatDuration(seconds) {
+            if (seconds < 60) return `${seconds}s`;
+            
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            
+            if (minutes < 60) {
+                return `${minutes}m ${remainingSeconds}s`;
+            }
+            
+            const hours = Math.floor(minutes / 60);
+            const remainingMinutes = minutes % 60;
+            
+            return `${hours}h ${remainingMinutes}m ${remainingSeconds}s`;
+        }
+
+        // Fonction pour mettre à jour le tableau de bord d'administration
+        function updateAdminDashboard() {
+            // Mettre à jour les compteurs
+            document.getElementById('total-visitors').textContent = visitors.length;
+            document.getElementById('active-users').textContent = visitors.filter(v => v.status === 'en ligne').length;
+            
+            // Calculer le temps moyen
+            if (visitors.length > 0) {
+                const totalTime = visitors.reduce((sum, visitor) => sum + visitor.timeSpent, 0);
+                const avgTime = Math.floor(totalTime / visitors.length);
+                document.getElementById('avg-time').textContent = formatDuration(avgTime);
+            } else {
+                document.getElementById('avg-time').textContent = "0s";
+            }
+            
+            // Compter les visites d'aujourd'hui
+            const today = new Date().toISOString().split('T')[0];
+            const todayVisits = visitors.filter(v => v.visitTime.startsWith(today)).length;
+            document.getElementById('today-visits').textContent = todayVisits;
+            
+            // Mettre à jour le tableau des visiteurs
+            const visitorsTable = document.getElementById('visitors-data');
+            visitorsTable.innerHTML = '';
+            
+            // Masquer le loader et afficher le tableau
+            document.getElementById('visitors-loading').style.display = 'none';
+            document.getElementById('visitors-table').style.display = 'table';
+            
+            visitors.forEach(visitor => {
+                const row = document.createElement('tr');
+                
+                // Formater la date pour un affichage plus convivial
+                const visitDate = new Date(visitor.visitTime);
+                const formattedDate = visitDate.toLocaleDateString() + ' ' + visitDate.toLocaleTimeString();
+                
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">${visitor.id}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">${visitor.ip}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">${visitor.browser}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">${visitor.os}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">${formattedDate}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">${formatDuration(visitor.timeSpent)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                        ${visitor.status === 'en ligne' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'}">
+                            ${visitor.status}
+                        </span>
+                    </td>
+                `;
+                
+                visitorsTable.appendChild(row);
+            });
+            
+            // Mise à jour du graphique
+            updateVisitsChart();
+        }
+
+        // Fonction pour mettre à jour le graphique des visites
+        function updateVisitsChart() {
+            const ctx = document.getElementById('visits-chart').getContext('2d');
+            
+            // Préparer les données pour le graphique
+            const dates = [];
+            const visitsData = [];
+            
+            // Obtenir les 7 derniers jours
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const dateString = date.toISOString().split('T')[0];
+                
+                dates.push(date.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric' }));
+                
+                // Compter les visites pour cette date
+                const visitsCount = visitors.filter(v => v.visitTime.startsWith(dateString)).length;
+                visitsData.push(visitsCount);
+            }
+            
+            // Vérifier si le graphique existe déjà
+            if (window.visitsChart) {
+                window.visitsChart.data.labels = dates;
+                window.visitsChart.data.datasets[0].data = visitsData;
+                window.visitsChart.update();
+            } else {
+                // Créer un nouveau graphique
+                window.visitsChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: dates,
+                        datasets: [{
+                            label: 'Nombre de visites',
+                            data: visitsData,
+                            backgroundColor: 'rgba(93, 92, 222, 0.2)',
+                            borderColor: 'rgba(93, 92, 222, 1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            pointBackgroundColor: 'rgba(93, 92, 222, 1)',
+                            pointRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    color: document.documentElement.classList.contains('dark') ? '#e5e7eb' : '#374151'
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    color: document.documentElement.classList.contains('dark') ? '#e5e7eb' : '#374151',
+                                    stepSize: 1
+                                },
+                                grid: {
+                                    color: document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: document.documentElement.classList.contains('dark') ? '#e5e7eb' : '#374151'
+                                },
+                                grid: {
+                                    color: document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+                                }
+                            }
+                        }
                     }
                 });
-            }, 100);
+            }
         }
 
         // Initialisation
@@ -665,12 +1105,51 @@
             const themeToggle = document.getElementById('themeToggle');
             themeToggle.addEventListener('click', function() {
                 document.documentElement.classList.toggle('dark');
+                
+                // Mettre à jour les couleurs du graphique si ouvert
+                if (window.visitsChart) {
+                    window.visitsChart.options.scales.y.ticks.color = document.documentElement.classList.contains('dark') ? '#e5e7eb' : '#374151';
+                    window.visitsChart.options.scales.x.ticks.color = document.documentElement.classList.contains('dark') ? '#e5e7eb' : '#374151';
+                    window.visitsChart.options.scales.y.grid.color = document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                    window.visitsChart.options.scales.x.grid.color = document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                    window.visitsChart.options.plugins.legend.labels.color = document.documentElement.classList.contains('dark') ? '#e5e7eb' : '#374151';
+                    window.visitsChart.update();
+                }
             });
             
             // Animation au défilement
+            function checkScroll() {
+                const animatedElements = document.querySelectorAll('.animate-slide-in, .animate-fade-in, .animate-slide-left, .animate-slide-right, .animate-scale, .animate-bounce-in, .animate-flip, .stagger-item');
+                
+                animatedElements.forEach(element => {
+                    const position = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    // Déclencher l'animation quand l'élément est dans la vue (90% de la hauteur de fenêtre)
+                    if (position < windowHeight * 0.9) {
+                        element.style.animationPlayState = 'running';
+                    }
+                });
+            }
+            
             window.addEventListener('scroll', checkScroll);
             
             // Animation des éléments visibles au chargement
+            function animateInitialElements() {
+                const elements = document.querySelectorAll('.animate-slide-in, .animate-fade-in, .animate-slide-left, .animate-slide-right, .animate-scale, .animate-bounce-in, .animate-flip, .stagger-item');
+                
+                setTimeout(() => {
+                    elements.forEach(element => {
+                        const position = element.getBoundingClientRect().top;
+                        const windowHeight = window.innerHeight;
+                        
+                        if (position < windowHeight) {
+                            element.style.animationPlayState = 'running';
+                        }
+                    });
+                }, 100);
+            }
+            
             animateInitialElements();
             
             // Smooth scroll pour les ancres
@@ -718,7 +1197,71 @@
                     }, 1500);
                 });
             }
+            
+            // ============== SYSTÈME D'ADMINISTRATION ==============
+            
+            // Lien d'administration dans le footer
+            const adminLink = document.getElementById('admin-link');
+            const adminModal = document.getElementById('admin-modal');
+            const closeAdminModal = document.getElementById('close-admin-modal');
+            const adminLoginForm = document.getElementById('admin-login-form');
+            const adminPanel = document.getElementById('admin-panel');
+            const closeAdminPanel = document.getElementById('close-admin-panel');
+            
+            // Ouvrir le modal de connexion admin
+            adminLink.addEventListener('click', function() {
+                adminModal.classList.add('active');
+            });
+            
+            // Fermer le modal de connexion admin
+            closeAdminModal.addEventListener('click', function() {
+                adminModal.classList.remove('active');
+            });
+            
+            // Fermer le modal lorsqu'on clique à l'extérieur
+            adminModal.addEventListener('click', function(e) {
+                if (e.target === adminModal) {
+                    adminModal.classList.remove('active');
+                }
+            });
+            
+            // Gérer la soumission du formulaire de connexion
+            adminLoginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('admin-username').value;
+                const password = document.getElementById('admin-password').value;
+                const loginError = document.getElementById('login-error');
+                
+                if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                    // Authentification réussie
+                    isAdmin = true;
+                    adminModal.classList.remove('active');
+                    adminPanel.classList.add('active');
+                    adminLoginForm.reset();
+                    loginError.classList.add('hidden');
+                    
+                    // Mettre à jour le tableau de bord
+                    updateAdminDashboard();
+                } else {
+                    // Authentification échouée
+                    loginError.textContent = "Nom d'utilisateur ou mot de passe incorrect";
+                    loginError.classList.remove('hidden');
+                }
+            });
+            
+            // Fermer le panneau d'administration
+            closeAdminPanel.addEventListener('click', function() {
+                adminPanel.classList.remove('active');
+            });
+            
+            // Démarrer le suivi des visiteurs
+            startTracking();
+
+         
         });
+
+       
     </script>
 </body>
 </html>
