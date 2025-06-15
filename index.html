@@ -41,6 +41,21 @@
         body {
             font-family: 'Poppins', sans-serif;
             scroll-behavior: smooth;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
         
         .skill-item {
@@ -86,6 +101,24 @@
         
         .dark .skill-item:hover {
             box-shadow: 0 10px 25px -5px rgba(255, 255, 255, 0.1);
+        }
+        
+        .new-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: linear-gradient(45deg, #10B981, #34D399);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
         
         /* Animations de base */
@@ -263,9 +296,9 @@
         }
     </style>
 </head>
-<body class="bg-white text-gray-800 dark:bg-dark dark:text-gray-200">
+<body class="bg-light dark:bg-dark text-gray-800 dark:text-gray-200">
     <!-- Navigation -->
-    <nav class="fixed w-full z-10 bg-white dark:bg-dark shadow-md">
+    <nav class="fixed top-0 left-0 w-full z-50 bg-white/90 dark:bg-dark/90 backdrop-blur-sm shadow-lg">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="font-bold text-xl text-primary">David<span class="text-gray-800 dark:text-white">.Kini</span></div>
             <div class="hidden md:flex space-x-8">
@@ -298,6 +331,59 @@
         </div>
     </nav>
 
+    <!-- Section Biographie -->
+    <section id="biographie" class="min-h-screen flex items-center justify-center py-20 px-4">
+        <div class="max-w-4xl mx-auto bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl transform hover:scale-105 transition-all duration-500">
+            <div class="text-center mb-12">
+                <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent animate-pulse">
+                    David Kini
+                </h1>
+                <p class="text-2xl text-gray-600 dark:text-gray-300 italic">
+                    Architecte du Web & Alchimiste du Code
+                </p>
+            </div>
+            
+            <div class="space-y-6 text-lg leading-relaxed">
+                <p class="animate-fade-in">
+                    Dans l'univers numérique où chaque ligne de code raconte une histoire, je suis le conteur qui transforme des idées en expériences digitales extraordinaires. Mon parcours n'est pas celui d'un simple développeur, mais celui d'un explorateur passionné qui a fait de la technologie son terrain de jeu.
+                </p>
+                
+                <p class="animate-slide-in">
+                    Mon aventure a commencé dans les profondeurs du code, où j'ai découvert que chaque bug était une opportunité d'apprentissage, chaque challenge une chance de repousser les limites. Aujourd'hui, je ne me contente pas de créer des sites web - je sculpte des expériences digitales qui laissent une empreinte mémorable.
+                </p>
+                
+                <p class="animate-slide-right">
+                    Mon approche unique combine une expertise technique pointue avec une créativité sans limites. Je ne suis pas simplement un développeur, je suis un architecte qui construit des ponts entre la technologie et l'expérience utilisateur, entre la fonctionnalité et l'esthétique.
+                </p>
+                
+                <div class="mt-8 p-6 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-xl">
+                    <h2 class="text-2xl font-bold mb-4 text-center">Ma Philosophie</h2>
+                    <p class="text-center italic">
+                        "Le code n'est pas juste une série de caractères, c'est une poésie qui donne vie à des rêves digitaux."
+                    </p>
+                </div>
+            </div>
+            
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-4 bg-white/5 rounded-lg text-center transform hover:scale-110 transition-all duration-300">
+                    <i class="fas fa-code text-3xl mb-3 text-purple-500"></i>
+                    <h3 class="font-bold">Innovation</h3>
+                    <p class="text-sm">Pushing boundaries</p>
+                </div>
+                <div class="p-4 bg-white/5 rounded-lg text-center transform hover:scale-110 transition-all duration-300">
+                    <i class="fas fa-paint-brush text-3xl mb-3 text-blue-500"></i>
+                    <h3 class="font-bold">Créativité</h3>
+                    <p class="text-sm">Thinking outside the box</p>
+                </div>
+                <div class="p-4 bg-white/5 rounded-lg text-center transform hover:scale-110 transition-all duration-300">
+                    <i class="fas fa-rocket text-3xl mb-3 text-pink-500"></i>
+                    <h3 class="font-bold">Excellence</h3>
+                    <p class="text-sm">Beyond expectations</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Hero Section -->
     <section id="home" class="min-h-screen pt-20 flex items-center">
         <div class="container mx-auto px-4 py-16">
@@ -305,7 +391,7 @@
                 <div class="md:w-1/2 animate-slide-left" style="animation-delay: 0.2s;">
                     <h1 class="text-4xl md:text-5xl font-bold mb-4">David <span class="text-primary">Kini</span></h1>
                     <h2 class="text-2xl md:text-3xl font-medium mb-6">Développeur Web & Maintenance Informatique</h2>
-                    <p class="text-lg mb-8 dark:text-gray-300">Passionné par la technologie et le développement informatique. Expert en résolution de problèmes techniques et création d'applications web innovantes.</p>
+                    <p class="text-lg mb-8 dark:text-gray-300">Passionné par la technologie et le développement informatique. Expert en résolution de problèmes techniques et création d'applications web innovantes. Récemment formé en Java pour élargir mes compétences en programmation.</p>
                     <div class="flex space-x-4">
                         <a href="#contact" class="px-6 py-3 bg-primary hover:bg-primaryDark text-white rounded-lg transition shadow-lg animate-bounce-in" style="animation-delay: 0.8s;">Me contacter</a>
                         <a href="#projects" class="px-6 py-3 border border-primary text-primary hover:bg-primary hover:text-white rounded-lg transition animate-bounce-in" style="animation-delay: 1s;">Voir mes projets</a>
@@ -314,7 +400,7 @@
                 <div class="md:w-1/2 mt-10 md:mt-0 flex justify-center animate-slide-right" style="animation-delay: 0.4s;">
                     <!-- Remplacez l'image par votre photo personnelle -->
                     <div class="relative h-80 w-80 rounded-full overflow-hidden bg-gradient-to-br from-primary to-blue-400 flex items-center justify-center shadow-xl">
-                        <img id="profile-image" src="image/profil.jpeg" alt="David Kini" class="w-full h-full object-cover" />
+                        <img id="profile-image" src="image/verstepro.jpeg" alt="David Kini" class="w-full h-full object-cover" />
                     </div>
                 </div>
             </div>
@@ -347,6 +433,24 @@
                     </div>
                 </div>
             </div>
+
+            <div class="mb-16 animate-fade-in" style="animation-delay: 0.25s;">
+                <h3 class="text-2xl font-semibold mb-8 text-center">Frameworks & Outils Web</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6 stagger-group">
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.1s;">
+                        <i class="fab fa-bootstrap text-4xl text-purple-600 mb-4"></i>
+                        <h4 class="font-medium">Bootstrap</h4>
+                    </div>
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.2s;">
+                        <i class="fab fa-js-square text-4xl text-blue-600 mb-4"></i>
+                        <h4 class="font-medium">jQuery</h4>
+                    </div>
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.3s;">
+                        <i class="fas fa-code text-4xl text-gray-600 mb-4"></i>
+                        <h4 class="font-medium">AJAX</h4>
+                    </div>
+                </div>
+            </div>
             
             <div class="mb-16 animate-fade-in" style="animation-delay: 0.3s;">
                 <h3 class="text-2xl font-semibold mb-8 text-center">Bases de Données</h3>
@@ -368,7 +472,7 @@
             
             <div class="mb-16 animate-fade-in" style="animation-delay: 0.4s;">
                 <h3 class="text-2xl font-semibold mb-8 text-center">Langages de Programmation</h3>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-6 stagger-group">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 stagger-group">
                     <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.1s;">
                         <i class="fas fa-code text-4xl text-blue-700 mb-4"></i>
                         <h4 class="font-medium">C</h4>
@@ -377,7 +481,12 @@
                         <i class="fab fa-python text-4xl text-green-600 mb-4"></i>
                         <h4 class="font-medium">Python</h4>
                     </div>
-                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.3s;">
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale relative" style="animation-delay: 0.3s;">
+                        <div class="new-badge">Nouveau!</div>
+                        <i class="fab fa-java text-4xl text-red-600 mb-4"></i>
+                        <h4 class="font-medium">Java</h4>
+                    </div>
+                    <div class="skill-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center stagger-item animate-scale" style="animation-delay: 0.4s;">
                         <i class="fab fa-android text-4xl text-green-500 mb-4"></i>
                         <h4 class="font-medium">Kotlin</h4>
                     </div>
@@ -419,7 +528,7 @@
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                         <h3 class="text-xl font-semibold mb-2">L2 en Maintenance Informatique</h3>
                         <p class="text-primary font-medium">ISTA - Actuellement</p>
-                        <p class="mt-3 dark:text-gray-300">Formation approfondie en maintenance des systèmes informatiques, réseaux et dépannage.</p>
+                        <p class="mt-3 dark:text-gray-300">Formation approfondie en maintenance des systèmes informatiques, réseaux et dépannage. Apprentissage récent de Java pour la programmation orientée objet.</p>
                     </div>
                 </div>
                 
@@ -428,7 +537,7 @@
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                         <h3 class="text-xl font-semibold mb-2">Diplôme d'État</h3>
                         <p class="text-primary font-medium">CS Boboto - 2023</p>
-                        <p class="mt-3 dark:text-gray-300">Obtention du diplôme d'État en informatique De gestion.</p>
+                        <p class="mt-3 dark:text-gray-300">Obtention du diplôme d'État en informatique de gestion.</p>
                     </div>
                 </div>
                 
@@ -458,52 +567,57 @@
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-center mb-16 animate-fade-in">Mes Projets</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 <div class="project-card bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg animate-flip" style="animation-delay: 0.2s;">
                     <div class="h-48 bg-gradient-to-r from-blue-500 to-primary flex items-center justify-center">
-                        <i class="fas fa-globe text-white text-5xl"></i>
+                        <i class="fas fa-university text-white text-5xl"></i>
                     </div>
-                   
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Site Web IST Boma</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Site web complet pour l'Institut Supérieur Technique de Boma. Interface moderne et responsive avec système de gestion de contenu.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded-full text-sm">HTML</span>
+                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">CSS</span>
+                            <span class="px-3 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full text-sm">JavaScript</span>
+                            <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm">PHP</span>
+                            <span class="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm">MySQL</span>
+                            <span class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded-full text-sm">Bootstrap</span>
+                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">jQuery</span>
+                        </div>
+                        <a href="https://ist-boma.com" target="_blank" class="text-primary hover:underline flex items-center gap-2">
+                            <span>Visiter le site</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
                 </div>
                 
                 <div class="project-card bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg animate-flip" style="animation-delay: 0.4s;">
-                    <div class="h-48 bg-gradient-to-r from-green-500 to-blue-500 flex items-center justify-center">
-                        <i class="fas fa-mobile-alt text-white text-5xl"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">Site Webh3>
-                        <p class="text-gray-600 dark:text-gray-300 mb-4">site web pour une instituti supérieure</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">Kotlin</span>
-                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">Firebase</span>
-                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">Material Design</span>
-                        </div>
-                        <a href="#" class="text-primary hover:underline flex items-center gap-2">
-                            <span>ist-boma.com</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="project-card bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg animate-flip" style="animation-delay: 0.6s;">
                     <div class="h-48 bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-                        <i class="fas fa-network-wired text-white text-5xl"></i>
+                        <i class="fas fa-file-export text-white text-5xl"></i>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">logiciel de conversion pdf en wold</h3>
-                        <p class="text-gray-600 dark:text-gray-300 mb-4">Mode de paiement en ligne conversion pdf word,word en pdf</p>
+                        <h3 class="text-xl font-semibold mb-2">Convertisseur PDF-Word</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Logiciel de bureau développé en Java pour la conversion bidirectionnelle de fichiers PDF vers Word et Word vers PDF. Interface utilisateur intuitive.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">Python</span>
-                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">Tkinter</span>
-                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm"></span>
-                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm"></span>
+                            <span class="px-3 py-1 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-sm">Java</span>
+                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">Swing</span>
+                            <span class="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm">Apache POI</span>
+                            <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm">iText</span>
                         </div>
-                        <a href="#" class="text-primary hover:underline flex items-center gap-2">
-                            <span>LE PROJET EST EN LOCAL</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
+                        <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-desktop"></i>
+                            <span>Projet en local</span>
+                        </div>
                     </div>
                 </div>
+            </div>
+            
+            <div class="text-center mt-12 animate-fade-in" style="animation-delay: 0.6s;">
+                <p class="text-gray-600 dark:text-gray-400 mb-4">D'autres projets sont en cours de développement...</p>
+                <a href="#contact" class="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primaryDark text-white rounded-lg transition shadow-lg">
+                    <span>Discuter d'un projet</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </section>
@@ -642,434 +756,12 @@
                     <a href="https://youtube.com/@bienvenukini2527?si=VZdTKFqsGm0MzocE" target="_blank" class="text-gray-400 hover:text-white transition">
                         <i class="fab fa-youtube"></i>
                     </a>
-                    <!-- Lien d'administration -->
-                    <button id="admin-link" class="text-gray-600 hover:text-gray-400 ml-4 text-xs transition">
-                        <i class="fas fa-lock"></i>
-                    </button>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Modal de Connexion Admin -->
-    <div id="admin-modal" class="admin-modal">
-        <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl max-w-md w-full">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-semibold">Connexion Administration</h3>
-                <button id="close-admin-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div id="login-error" class="hidden mb-4 p-3 bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 rounded-lg"></div>
-            <form id="admin-login-form">
-                <div class="mb-4">
-                    <label for="admin-username" class="block text-sm font-medium mb-2">Nom d'utilisateur</label>
-                    <input type="text" id="admin-username" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-base" required>
-                </div>
-                <div class="mb-6">
-                    <label for="admin-password" class="block text-sm font-medium mb-2">Mot de passe</label>
-                    <input type="password" id="admin-password" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-base" required>
-                </div>
-                <button type="submit" class="w-full py-3 bg-primary hover:bg-primaryDark text-white rounded-lg transition shadow-lg flex items-center justify-center gap-2">
-                    <span>Se connecter</span>
-                    <i class="fas fa-sign-in-alt"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Panneau d'Administration -->
-    <div id="admin-panel" class="admin-panel">
-        <div class="flex flex-col h-full">
-            <!-- En-tête du panneau admin -->
-            <div class="bg-primary text-white py-4 px-6 flex justify-between items-center shadow-md">
-                <div class="flex items-center">
-                    <i class="fas fa-shield-alt text-xl mr-2"></i>
-                    <h2 class="text-lg font-semibold">Panneau d'Administration</h2>
-                </div>
-                <button id="close-admin-panel" class="text-white hover:text-gray-200">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            
-            <!-- Contenu du panneau -->
-            <div class="flex-1 bg-gray-100 dark:bg-gray-900 overflow-y-auto">
-                <div class="container mx-auto p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="font-semibold text-gray-600 dark:text-gray-300">Visiteurs Totaux</h3>
-                                <div class="bg-blue-100 dark:bg-blue-900 p-2 rounded">
-                                    <i class="fas fa-users text-blue-600 dark:text-blue-300"></i>
-                                </div>
-                            </div>
-                            <p id="total-visitors" class="text-3xl font-bold">--</p>
-                        </div>
-                        
-                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="font-semibold text-gray-600 dark:text-gray-300">Utilisateurs Actifs</h3>
-                                <div class="bg-green-100 dark:bg-green-900 p-2 rounded">
-                                    <i class="fas fa-user-clock text-green-600 dark:text-green-300"></i>
-                                </div>
-                            </div>
-                            <p id="active-users" class="text-3xl font-bold">--</p>
-                        </div>
-                        
-                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="font-semibold text-gray-600 dark:text-gray-300">Temps Moyen</h3>
-                                <div class="bg-yellow-100 dark:bg-yellow-900 p-2 rounded">
-                                    <i class="fas fa-clock text-yellow-600 dark:text-yellow-300"></i>
-                                </div>
-                            </div>
-                            <p id="avg-time" class="text-3xl font-bold">--</p>
-                        </div>
-                        
-                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="font-semibold text-gray-600 dark:text-gray-300">Visites Aujourd'hui</h3>
-                                <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded">
-                                    <i class="fas fa-chart-line text-purple-600 dark:text-purple-300"></i>
-                                </div>
-                            </div>
-                            <p id="today-visits" class="text-3xl font-bold">--</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Liste des visiteurs -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow mb-8">
-                        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                            <h3 class="text-lg font-semibold">Derniers Visiteurs</h3>
-                        </div>
-                        <div class="p-6" id="visitors-loading">
-                            <div class="flex justify-center">
-                                <div class="loader"></div>
-                            </div>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700" id="visitors-table" style="display: none;">
-                                <thead class="bg-gray-50 dark:bg-gray-700">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Visiteur ID</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Adresse IP</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Navigateur</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Système</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Date de visite</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Temps passé</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Statut</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="visitors-data" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                    <!-- Les données des visiteurs seront injectées ici -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    <!-- Graphique des visites -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-                        <h3 class="text-lg font-semibold mb-4">Statistiques de visites</h3>
-                        <div class="relative">
-                            <canvas id="visits-chart" height="300"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Variables globales pour le suivi des visiteurs
-        let visitors = [];
-        let currentVisitorId = null;
-        let visitStartTime = null;
-        let isAdmin = false;
-        let isTracking = false;
-
-        // Identifiants d'administrateur codés en dur (à changer dans un environnement de production)
-        const ADMIN_USERNAME = "admin";
-        const ADMIN_PASSWORD = "admin123";
-
-        // Fonction pour démarrer le suivi des visiteurs
-        function startTracking() {
-            if (isTracking) return;
-            isTracking = true;
-
-            // Générer un ID unique pour le visiteur actuel
-            currentVisitorId = 'visitor_' + Math.random().toString(36).substr(2, 9);
-            visitStartTime = Date.now();
-
-            // Collecter les informations du visiteur
-            const visitorInfo = {
-                id: currentVisitorId,
-                ip: '(IP sera collectée)',  // Simulé - serait extrait côté serveur
-                userAgent: navigator.userAgent,
-                browser: getBrowserInfo(),
-                os: getOSInfo(),
-                visitTime: new Date().toISOString(),
-                timeSpent: 0,
-                status: 'en ligne',
-                pages: [{
-                    url: window.location.pathname,
-                    visitTime: new Date().toISOString(),
-                    timeSpent: 0
-                }]
-            };
-
-            // Simuler la collecte d'IP (dans un environnement réel, cela serait fait côté serveur)
-            simulateIpCollection(visitorInfo);
-
-            // Ajouter aux visiteurs
-            visitors.push(visitorInfo);
-            
-            // Sauvegarder les données (dans un environnement réel avec base de données)
-            saveVisitorData();
-
-            // Mettre à jour le temps passé toutes les secondes
-            setInterval(updateTimeSpent, 1000);
-
-            // Configurer un gestionnaire pour quand l'utilisateur quitte la page
-            window.addEventListener('beforeunload', function() {
-                const visitor = visitors.find(v => v.id === currentVisitorId);
-                if (visitor) {
-                    visitor.status = 'déconnecté';
-                    visitor.timeSpent = Math.floor((Date.now() - visitStartTime) / 1000);
-                    saveVisitorData();
-                }
-            });
-        }
-
-        // Fonction pour simuler la collecte d'adresse IP
-        function simulateIpCollection(visitor) {
-            // Génère une adresse IP aléatoire pour la démonstration
-            const ip1 = Math.floor(Math.random() * 255);
-            const ip2 = Math.floor(Math.random() * 255);
-            const ip3 = Math.floor(Math.random() * 255);
-            const ip4 = Math.floor(Math.random() * 255);
-            
-            visitor.ip = `${ip1}.${ip2}.${ip3}.${ip4}`;
-        }
-
-        // Fonctions pour obtenir les informations système
-        function getBrowserInfo() {
-            const userAgent = navigator.userAgent;
-            let browserName;
-            
-            if (userAgent.match(/chrome|chromium|crios/i)) {
-                browserName = "Chrome";
-            } else if (userAgent.match(/firefox|fxios/i)) {
-                browserName = "Firefox";
-            } else if (userAgent.match(/safari/i)) {
-                browserName = "Safari";
-            } else if (userAgent.match(/opr\//i)) {
-                browserName = "Opera";
-            } else if (userAgent.match(/edg/i)) {
-                browserName = "Edge";
-            } else {
-                browserName = "Navigateur inconnu";
-            }
-            
-            return browserName;
-        }
-
-        function getOSInfo() {
-            const userAgent = navigator.userAgent;
-            let osName;
-            
-            if (userAgent.match(/windows nt/i)) {
-                osName = "Windows";
-            } else if (userAgent.match(/macintosh|mac os x/i)) {
-                osName = "MacOS";
-            } else if (userAgent.match(/linux/i)) {
-                osName = "Linux";
-            } else if (userAgent.match(/android/i)) {
-                osName = "Android";
-            } else if (userAgent.match(/iphone|ipad|ipod/i)) {
-                osName = "iOS";
-            } else {
-                osName = "OS inconnu";
-            }
-            
-            return osName;
-        }
-
-        // Fonction pour mettre à jour le temps passé
-        function updateTimeSpent() {
-            if (!currentVisitorId) return;
-            
-            const visitor = visitors.find(v => v.id === currentVisitorId);
-            if (visitor) {
-                visitor.timeSpent = Math.floor((Date.now() - visitStartTime) / 1000);
-                saveVisitorData();
-            }
-        }
-
-        // Fonction pour sauvegarder les données des visiteurs (simulé)
-        function saveVisitorData() {
-            // Dans un environnement réel, ces données seraient envoyées à un serveur
-            // Pour cette démo, nous utilisons des variables globales JS
-            
-            // Mettre à jour le tableau de bord administrateur si le panneau est ouvert
-            if (isAdmin && document.getElementById('admin-panel').classList.contains('active')) {
-                updateAdminDashboard();
-            }
-        }
-
-        // Fonction pour formater la durée en format lisible
-        function formatDuration(seconds) {
-            if (seconds < 60) return `${seconds}s`;
-            
-            const minutes = Math.floor(seconds / 60);
-            const remainingSeconds = seconds % 60;
-            
-            if (minutes < 60) {
-                return `${minutes}m ${remainingSeconds}s`;
-            }
-            
-            const hours = Math.floor(minutes / 60);
-            const remainingMinutes = minutes % 60;
-            
-            return `${hours}h ${remainingMinutes}m ${remainingSeconds}s`;
-        }
-
-        // Fonction pour mettre à jour le tableau de bord d'administration
-        function updateAdminDashboard() {
-            // Mettre à jour les compteurs
-            document.getElementById('total-visitors').textContent = visitors.length;
-            document.getElementById('active-users').textContent = visitors.filter(v => v.status === 'en ligne').length;
-            
-            // Calculer le temps moyen
-            if (visitors.length > 0) {
-                const totalTime = visitors.reduce((sum, visitor) => sum + visitor.timeSpent, 0);
-                const avgTime = Math.floor(totalTime / visitors.length);
-                document.getElementById('avg-time').textContent = formatDuration(avgTime);
-            } else {
-                document.getElementById('avg-time').textContent = "0s";
-            }
-            
-            // Compter les visites d'aujourd'hui
-            const today = new Date().toISOString().split('T')[0];
-            const todayVisits = visitors.filter(v => v.visitTime.startsWith(today)).length;
-            document.getElementById('today-visits').textContent = todayVisits;
-            
-            // Mettre à jour le tableau des visiteurs
-            const visitorsTable = document.getElementById('visitors-data');
-            visitorsTable.innerHTML = '';
-            
-            // Masquer le loader et afficher le tableau
-            document.getElementById('visitors-loading').style.display = 'none';
-            document.getElementById('visitors-table').style.display = 'table';
-            
-            visitors.forEach(visitor => {
-                const row = document.createElement('tr');
-                
-                // Formater la date pour un affichage plus convivial
-                const visitDate = new Date(visitor.visitTime);
-                const formattedDate = visitDate.toLocaleDateString() + ' ' + visitDate.toLocaleTimeString();
-                
-                row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">${visitor.id}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">${visitor.ip}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">${visitor.browser}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">${visitor.os}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">${formattedDate}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">${formatDuration(visitor.timeSpent)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                        ${visitor.status === 'en ligne' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'}">
-                            ${visitor.status}
-                        </span>
-                    </td>
-                `;
-                
-                visitorsTable.appendChild(row);
-            });
-            
-            // Mise à jour du graphique
-            updateVisitsChart();
-        }
-
-        // Fonction pour mettre à jour le graphique des visites
-        function updateVisitsChart() {
-            const ctx = document.getElementById('visits-chart').getContext('2d');
-            
-            // Préparer les données pour le graphique
-            const dates = [];
-            const visitsData = [];
-            
-            // Obtenir les 7 derniers jours
-            for (let i = 6; i >= 0; i--) {
-                const date = new Date();
-                date.setDate(date.getDate() - i);
-                const dateString = date.toISOString().split('T')[0];
-                
-                dates.push(date.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric' }));
-                
-                // Compter les visites pour cette date
-                const visitsCount = visitors.filter(v => v.visitTime.startsWith(dateString)).length;
-                visitsData.push(visitsCount);
-            }
-            
-            // Vérifier si le graphique existe déjà
-            if (window.visitsChart) {
-                window.visitsChart.data.labels = dates;
-                window.visitsChart.data.datasets[0].data = visitsData;
-                window.visitsChart.update();
-            } else {
-                // Créer un nouveau graphique
-                window.visitsChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: dates,
-                        datasets: [{
-                            label: 'Nombre de visites',
-                            data: visitsData,
-                            backgroundColor: 'rgba(93, 92, 222, 0.2)',
-                            borderColor: 'rgba(93, 92, 222, 1)',
-                            borderWidth: 2,
-                            tension: 0.3,
-                            pointBackgroundColor: 'rgba(93, 92, 222, 1)',
-                            pointRadius: 4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                                labels: {
-                                    color: document.documentElement.classList.contains('dark') ? '#e5e7eb' : '#374151'
-                                }
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    color: document.documentElement.classList.contains('dark') ? '#e5e7eb' : '#374151',
-                                    stepSize: 1
-                                },
-                                grid: {
-                                    color: document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
-                                }
-                            },
-                            x: {
-                                ticks: {
-                                    color: document.documentElement.classList.contains('dark') ? '#e5e7eb' : '#374151'
-                                },
-                                grid: {
-                                    color: document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-        }
-
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             // Menu mobile
@@ -1091,16 +783,6 @@
             const themeToggle = document.getElementById('themeToggle');
             themeToggle.addEventListener('click', function() {
                 document.documentElement.classList.toggle('dark');
-                
-                // Mettre à jour les couleurs du graphique si ouvert
-                if (window.visitsChart) {
-                    window.visitsChart.options.scales.y.ticks.color = document.documentElement.classList.contains('dark') ? '#e5e7eb' : '#374151';
-                    window.visitsChart.options.scales.x.ticks.color = document.documentElement.classList.contains('dark') ? '#e5e7eb' : '#374151';
-                    window.visitsChart.options.scales.y.grid.color = document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-                    window.visitsChart.options.scales.x.grid.color = document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-                    window.visitsChart.options.plugins.legend.labels.color = document.documentElement.classList.contains('dark') ? '#e5e7eb' : '#374151';
-                    window.visitsChart.update();
-                }
             });
             
             // Animation au défilement
@@ -1183,66 +865,6 @@
                     }, 1500);
                 });
             }
-            
-            // ============== SYSTÈME D'ADMINISTRATION ==============
-            
-            // Lien d'administration dans le footer
-            const adminLink = document.getElementById('admin-link');
-            const adminModal = document.getElementById('admin-modal');
-            const closeAdminModal = document.getElementById('close-admin-modal');
-            const adminLoginForm = document.getElementById('admin-login-form');
-            const adminPanel = document.getElementById('admin-panel');
-            const closeAdminPanel = document.getElementById('close-admin-panel');
-            
-            // Ouvrir le modal de connexion admin
-            adminLink.addEventListener('click', function() {
-                adminModal.classList.add('active');
-            });
-            
-            // Fermer le modal de connexion admin
-            closeAdminModal.addEventListener('click', function() {
-                adminModal.classList.remove('active');
-            });
-            
-            // Fermer le modal lorsqu'on clique à l'extérieur
-            adminModal.addEventListener('click', function(e) {
-                if (e.target === adminModal) {
-                    adminModal.classList.remove('active');
-                }
-            });
-            
-            // Gérer la soumission du formulaire de connexion
-            adminLoginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const username = document.getElementById('admin-username').value;
-                const password = document.getElementById('admin-password').value;
-                const loginError = document.getElementById('login-error');
-                
-                if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-                    // Authentification réussie
-                    isAdmin = true;
-                    adminModal.classList.remove('active');
-                    adminPanel.classList.add('active');
-                    adminLoginForm.reset();
-                    loginError.classList.add('hidden');
-                    
-                    // Mettre à jour le tableau de bord
-                    updateAdminDashboard();
-                } else {
-                    // Authentification échouée
-                    loginError.textContent = "Nom d'utilisateur ou mot de passe incorrect";
-                    loginError.classList.remove('hidden');
-                }
-            });
-            
-            // Fermer le panneau d'administration
-            closeAdminPanel.addEventListener('click', function() {
-                adminPanel.classList.remove('active');
-            });
-            
-            // Démarrer le suivi des visiteurs
-            startTracking();
         });
     </script>
 </body>
